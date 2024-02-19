@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Serial Numbers</title>
+</head>
+<body>
+    <h2>Generated Serial Numbers</h2>
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Bundle Number</th>
+            <th>Serial Number</th>
+            <th>QR Code</th>
+        </tr>
+        {% for serial_number, qr_code_file_name in serial_numbers %}
+        <tr>
+            <td>{{ product_name }}</td>
+            <td>{{ bundle_id }}</td>
+            <td>{{ serial_number }}</td>
+            <td><img src="/{{ qr_code_file_name }}" alt="QR Code"></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

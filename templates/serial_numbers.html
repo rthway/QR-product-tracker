@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Serial Numbers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function printQRCode(imageUrl) {
+            var newWindow = window.open("", "_blank");
+            newWindow.document.write('<html><head><title>QR Code</title></head><body></body></html>');
+            newWindow.document.close();
+    
+            var img = newWindow.document.createElement("img");
+            img.onload = function() {
+                newWindow.print();
+            };
+            img.src = imageUrl;
+            newWindow.document.body.appendChild(img);
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Generated Serial Numbers</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Bundle Number</th>
+                    <th>Serial Number</th>
+                    <th>QR Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for serial_number, qr_code_file_name in serial_numbers %}
+                <tr>
+                    <td>{{ product_name }}</td>
+                    <td>{{ bundle_id }}</td>
+                    <td>{{ serial_number }}</td>
+                    <td><button class="btn btn-primary" onclick="printQRCode('/{{ qr_code_file_name }}')">Print QR Code</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

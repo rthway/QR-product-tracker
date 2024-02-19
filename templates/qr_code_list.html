@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Serial Numbers</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready( function () {
+            $('#serialNumbersTable').DataTable();
+        } );
+    </script>
+</head>
+<body>
+    <h2>Generated Serial Numbers</h2>
+    <table id="serialNumbersTable" class="display">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Lots</th>
+                <th>Bundle ID</th>
+                <th>Serial Number</th>
+            </tr>
+            {% for serial_number in serial_numbers %}
+            <tr>
+                <td>{{ serial_number.product_name }}</td>
+                <td>{{ serial_number.lots }}</td>
+                <td>{{ serial_number.bundle_id }}</td>
+                <td>{{ serial_number.serial_number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

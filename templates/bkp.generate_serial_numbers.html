@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Serial Numbers</title>
+</head>
+<body>
+    <h2>Generate Serial Numbers</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="product_name">Product Name:</label><br>
+        <input type="text" id="product_name" name="product_name"><br>
+        <label for="min_bulk_id">Min Bulk ID:</label><br>
+        <input type="number" id="min_bulk_id" name="min_bulk_id"><br>
+        <label for="max_bulk_id">Max Bulk ID:</label><br>
+        <input type="number" id="max_bulk_id" name="max_bulk_id"><br><br>
+        <input type="submit" value="Generate">
+    </form>
+</body>
+</html>
