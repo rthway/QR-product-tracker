@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>{% include 'navigation_bar.html' %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Serial Numbers</title>
@@ -29,7 +29,10 @@
                     <th>Product Name</th>
                     <th>Min Bulk ID</th>
                     <th>Max Bulk ID</th>
+                    <th>Bundle Number</th>
+                    <th>Bundle Print</th>
                     <th>Serial Number</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +41,12 @@
                     <td>{{ serial_number.product_name }}</td>
                     <td>{{ serial_number.min_bulk_id }}</td>
                     <td>{{ serial_number.max_bulk_id }}</td>
+                    <td>{{ serial_number.bundle_number }}</td>
+                    <td><a href="print_qr_code/{{ serial_number.bundle_number }}" target="_blank" class="btn btn-primary">Print QR Code</a></td>
                     <td>{{ serial_number.serial_number }}</td>
+                    
+                    
+                    
                 </tr>
                 {% endfor %}
             </tbody>
