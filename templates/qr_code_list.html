@@ -1,35 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Generated Serial Numbers</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-    <script>
-        $(document).ready( function () {
-            $('#serialNumbersTable').DataTable();
-        } );
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Serial Numbers</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .search-bar {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Generated Serial Numbers</h2>
-    <table id="serialNumbersTable" class="display">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Lots</th>
-                <th>Bundle ID</th>
-                <th>Serial Number</th>
-            </tr>
-            {% for serial_number in serial_numbers %}
-            <tr>
-                <td>{{ serial_number.product_name }}</td>
-                <td>{{ serial_number.lots }}</td>
-                <td>{{ serial_number.bundle_id }}</td>
-                <td>{{ serial_number.serial_number }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>All Serial Numbers</h1>
+        <!-- Search Bar -->
+        <div class="input-group mb-3 search-bar">
+            <input type="text" class="form-control" placeholder="Search Serial Numbers" id="searchInput">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="searchBtn">Search</button>
+            </div>
+        </div>
+
+          <table class="table table-bordered" id="serialNumbersTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Min Bulk ID</th>
+                    <th>Max Bulk ID</th>
+                    <th>Serial Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for serial_number in serial_numbers %}
+                <tr>
+                    <td>{{ serial_number.product_name }}</td>
+                    <td>{{ serial_number.min_bulk_id }}</td>
+                    <td>{{ serial_number.max_bulk_id }}</td>
+                    <td>{{ serial_number.serial_number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
+
+    <!-- Bootstrap JS and JQuery (you can include these at the end of your body for faster page loading) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Search functionality
+            $('#searchBtn').click(function () {
+                var searchText = $('#searchInput').val().toLowerCase();
+                filterTable(searchText);
+            });
+
+            // Filter functionality
+            $('#filterSelect').change(function () {
+                var filterValue = $(this).val().toLowerCase();
+                filterTable(filterValue);
+            });
+
+            function filterTable(filterValue) {
+                $('#serialNumbersTable tbody tr').each(function () {
+                    var found = false;
+                    if (filterValue === 'all' || $(this).text().toLowerCase().indexOf(filterValue) !== -1) {
+                        found = true;
+                    }
+                    if (found) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            // Pagination
+            var tableRows = $('#serialNumbersTable tbody tr');
+            var rowsPerPage = 50;
+            var totalPages = Math.ceil(tableRows.length / rowsPerPage);
+            var currentPage = 1;
+
+            function showPage(page) {
+                tableRows.hide();
+                var startIndex = (page - 1) * rowsPerPage;
+                var endIndex = startIndex + rowsPerPage;
+                tableRows.slice(startIndex, endIndex).show();
+            }
+
+            function setupPagination() {
+                $('#pagination').html('');
+                for (var i = 1; i <= totalPages; i++) {
+                    $('#pagination').append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+                }
+                $('#pagination li').click(function () {
+                    currentPage = parseInt($(this).text());
+                    showPage(currentPage);
+                    $(this).addClass('active').siblings().removeClass('active');
+                });
+                $('#pagination li:first-child').addClass('active');
+            }
+
+            showPage(currentPage);
+            setupPagination();
+        });
+    </script>
 </body>
 </html>
